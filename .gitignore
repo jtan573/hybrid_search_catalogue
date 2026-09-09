@@ -1,0 +1,15 @@
+project_documents/
+data/
+category_profiles/
+chroma_db/
+test_run_outputs/
+processed_chunks/
+__pycache__/
+
+eda.ipynb
+property_checks.py
+category_profile_tokens.py
+vectordb.ipynb
+results_analysis.ipynb
+hybrid_retrieval.ipynb
+.env
