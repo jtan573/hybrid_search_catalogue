@@ -2,7 +2,7 @@
 search_demo_app.py
 
 Lightweight Streamlit UI for demoing search_semantic / search_hybrid /
-search_query_aware side by side, using your existing pipeline
+search_query_aware side by side, using existing pipeline
 (search_methods.py + the loaders in test_runner_v5.py).
 
 Run with:
@@ -12,8 +12,8 @@ Expects to sit in the same directory as:
     search_methods.py
     test_runner.py
     category_profile_tokens.py
-    processed_chunks/combined_chunks.csv   (or point at your own path in the sidebar)
-    chroma_db/                             (or point at your own path in the sidebar)
+    processed_chunks/combined_chunks.csv
+    chroma_db/                          
 """
 
 import time
