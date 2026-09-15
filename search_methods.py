@@ -30,11 +30,12 @@ import category_profile_tokens
 import re
 import os
 import time
+import json
 from nltk.corpus import stopwords
 import numpy as np
 from nltk.stem import SnowballStemmer
 
-# ── assumed in scope from your existing pipeline ──────────────────────────────
+# ── SETUP ──────────────────────────────
 # model         : SentenceTransformer
 # collections   : dict[str, chromadb.Collection]
 # compute_all_hybrid_scores(query, alpha) -> {pid: {cat: score_dict}}
@@ -141,10 +142,7 @@ def compute_semantic_scores_from_chroma(
 ) -> dict[str, float]:
     """
     Compute cosine similarity between the query embedding and every
-    document's embedding directly (via .get(), not ANN .query()) —
-    avoids HNSW approximate-search dropping documents from the result
-    set, which was causing near-identical products to get inconsistent
-    (sometimes silently-zeroed) semantic scores.
+    document's embedding directly.
     """
     results = collection.get(include=["embeddings", "metadatas", "documents"])
 
@@ -335,20 +333,20 @@ def search_hybrid(
 # ════════════════════════════════════════════════════════════════════
 
 # Map each collection name to its curated token list
-# (imported / defined elsewhere in your pipeline)
-CATEGORY_TOKEN_SETS = {
-    "epd":                category_profile_tokens.EPD_TOKENS,
-    "materials":          category_profile_tokens.MATERIALS_TOKENS,
-    "certifications":     category_profile_tokens.CERTIFICATION_TOKENS,
-    "standards":          category_profile_tokens.STANDARDS_TOKENS,
-    "tags":               category_profile_tokens.OTHER_TAGS_TOKENS,
-    "scores":             category_profile_tokens.SCORES_TOKENS,
-    "attributes":         category_profile_tokens.ATTRIBUTE_TOKENS,
-    "product_core":       category_profile_tokens.PRODUCT_CORE_TOKENS,
-    "product_compliance": category_profile_tokens.PRODUCT_COMPLIANCE_TOKENS,
-    "product_properties": category_profile_tokens.PRODUCT_PROPERTIES_TOKENS,
-    "product_performance": category_profile_tokens.PRODUCT_PERFORMANCE_TOKENS,
-}
+
+COLLECTION_01=os.getenv("COLLECTION_01")
+COLLECTION_02=os.getenv("COLLECTION_02")
+COLLECTION_03=os.getenv("COLLECTION_03")
+COLLECTION_04=os.getenv("COLLECTION_04")
+COLLECTION_05=os.getenv("COLLECTION_05")
+COLLECTION_06=os.getenv("COLLECTION_06")
+COLLECTION_07=os.getenv("COLLECTION_07")
+COLLECTION_08=os.getenv("COLLECTION_08")
+COLLECTION_09=os.getenv("COLLECTION_09")
+COLLECTION_10=os.getenv("COLLECTION_10")
+COLLECTION_11=os.getenv("COLLECTION_11")
+
+CATEGORY_TOKEN_SETS = json.loads(os.getenv("CATEGORY_TOKENS"))
 
 
 def compute_category_weight(

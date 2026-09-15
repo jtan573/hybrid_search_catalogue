@@ -29,8 +29,7 @@ Scope / known limitations (see accompanying report section):
     embedding by default, so it can still carry some of the same bias,
     since sentence embeddings do not reliably encode negation/polarity.
     An optional `model` parameter is provided to re-embed the cleaned
-    query for semantic scoring too, as a partial mitigation — pass
-    your SentenceTransformer instance if you want to test this.
+    query for semantic scoring too, as a partial mitigation.
   - Only single-token negation cues are handled ("not", "no",
     "without", "excluding", "except"); scope runs to the next clause
     boundary (comma, "and", "or", ";", end of string).

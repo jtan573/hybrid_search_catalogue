@@ -1,5 +1,5 @@
 """
-test_runner_v5.py
+test_runner.py
 
 Three check types, each targeting a specific component of the three methods:
 
@@ -121,7 +121,7 @@ def evaluate_token_checks(check_def: dict, product_row: dict) -> dict:
     Groups token_checks by 'concept'. A concept is satisfied if ANY of its
     categories' any_of tokens is found in the product's data for that
     category (OR within a concept). Coverage = satisfied_concepts / total_concepts,
-    rather than the old flat per-category count — this stops queries with the
+    rather than the old flat per-category count, this stops queries with the
     same fact split across multiple categories from being penalized relative
     to queries that only test each fact once.
     """
@@ -463,11 +463,11 @@ def run_all_tests(
                 row["error"] = method_data["error"]
             else:
                 row["n_results"]               = method_data["n_results"]
-                row["time_s"]                  = method_data.get("time_s")            # NEW — total method wall-clock
+                row["time_s"]                  = method_data.get("time_s")
                 row["weight_computation_s"]    = method_data.get("weight_computation_s")
                 row["token_precision_at_k"]    = method_data["token_precision_at_k"]
                 row["token_coverage_mean"]     = method_data["token_coverage_mean"]
-                row["semantic_coverage_mean"]  = method_data["semantic_coverage_mean"]   # CHANGED
+                row["semantic_coverage_mean"]  = method_data["semantic_coverage_mean"]
                 wc = method_data["weight_check"]
                 row["weight_check_passed"]      = wc.get("passed")
                 row["weight_relevant_matched"]  = ", ".join(wc.get("relevant_matched",  []))
@@ -503,9 +503,9 @@ def run_all_tests(
                     "avg_semantic":              cs["avg_semantic"],
                     "avg_token":                 cs["avg_token"],
                     "token_check_coverage":      p["token_check"]["coverage"],
-                    "token_concepts_missed":     ", ".join(k for k, v in p["token_check"]["concept_results"].items() if not v),      # NEW
+                    "token_concepts_missed":     ", ".join(k for k, v in p["token_check"]["concept_results"].items() if not v), 
                     "semantic_check_coverage":   p["semantic_check"]["coverage"],
-                    "semantic_concepts_missed":  ", ".join(k for k, v in p["semantic_check"]["concept_results"].items() if not v),   # NEW
+                    "semantic_concepts_missed":  ", ".join(k for k, v in p["semantic_check"]["concept_results"].items() if not v), 
                     "semantic_check_n_passed":   p["semantic_check"]["n_passed"],
                     "semantic_check_n_expected": p["semantic_check"]["n_expected"],
                     "category_scores_json":      json.dumps(p["category_scores_raw"]),
@@ -516,17 +516,17 @@ def run_all_tests(
     summary_df.to_csv(summary_path, index=False)
     print(f"\nSummary CSV → {summary_path}")
 
-    detail_df   = pd.DataFrame(detail_rows)                                    # NEW
-    detail_path = os.path.join(output_dir, f"test_topk_detail_{timestamp}.csv")  # NEW
-    detail_df.to_csv(detail_path, index=False)                                 # NEW
-    print(f"Top-K detail CSV → {detail_path}")                                 # NEW
+    detail_df   = pd.DataFrame(detail_rows)                                    
+    detail_path = os.path.join(output_dir, f"test_topk_detail_{timestamp}.csv")
+    detail_df.to_csv(detail_path, index=False)                                
+    print(f"Top-K detail CSV → {detail_path}")                                
 
     json_path = os.path.join(output_dir, f"test_full_results_{timestamp}.json")
     with open(json_path, "w") as f:
         json.dump(all_results, f, indent=2)
     print(f"Full JSON   → {json_path}")
 
-    return summary_df, detail_df, all_results          # CHANGED — now 3 return values
+    return summary_df, detail_df, all_results 
 
 
 # ─── Progression report ───────────────────────────────────────────────────────
@@ -603,7 +603,7 @@ if __name__ == "__main__":
     combined_df["product_id"] = combined_df["product_id"].astype(str)
     product_lookup = combined_df.set_index("product_id").to_dict(orient="index")
 
-    summary_df, detail_df, all_results = run_all_tests(   # was: summary_df, all_results = ...
+    summary_df, detail_df, all_results = run_all_tests(
         product_lookup=product_lookup,
         model=model,
         collections=collections,
